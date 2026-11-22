@@ -1,2 +1,3 @@
-# Mi-desarrollo-humano
-Lo que se reconoce, se gestiona; lo que se comprende, te hace crecer. Aprender a identificar con claridad nuestras emociones es la base de una vida plena y consciente. Utiliza esta herramienta para conectar contigo mismo, darle voz a lo que sientes y dar un paso firme en tu desarrollo personal. ¡Empieza hoy tu viaje de autoconocimiento!
+#Hecho & Constancia
+La autoeficacia nace cuando demuestras con hechos que puedes cumplirte a ti mismo.
+Domina tu tiempo bloque a bloque, cultiva la disciplina a través de tus hábitos diarios y gestiona tus tareas con claridad. Esta herramienta está diseñada para que avances sin abrumarte y confíes plenamente en tu capacidad de lograr tus metas. ¿Listo para empezar tu próximo bloque de enfoque?
