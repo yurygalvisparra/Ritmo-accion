@@ -239,24 +239,43 @@
 
           <!-- Navegación de Mes y Restaurar Ejemplos -->
           <div class="flex flex-wrap items-center gap-2">
-            <div class="flex items-center bg-[#0f1115] border border-[#2a2f3a] rounded-xl p-1">
-              <button onclick="changeMonth(-1)" class="p-1.5 rounded-lg hover:bg-[#232732] text-gray-400 hover:text-white transition cursor-pointer" title="Mes anterior">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                </svg>
-              </button>
-              <span id="current-month-label" class="px-3 text-xs sm:text-sm font-bold text-emerald-400 capitalize min-w-[130px] text-center">
-                --
-              </span>
-              <button onclick="changeMonth(1)" class="p-1.5 rounded-lg hover:bg-[#232732] text-gray-400 hover:text-white transition cursor-pointer" title="Mes siguiente">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
-            </div>
+            <span class="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs sm:text-sm font-bold text-emerald-400">
+              Reto de 21 Días
+            </span>
+
+            <button onclick="requestResetCycle()" class="px-3 py-2 rounded-xl bg-[#0f1115] hover:bg-rose-950/40 border border-[#2a2f3a] hover:border-rose-500/40 text-xs font-medium text-gray-300 hover:text-rose-200 transition cursor-pointer" title="Limpiar marcas y reiniciar ciclo de 21 días">
+              Reiniciar ciclo 21d
+            </button>
 
             <button onclick="requestResetHabits()" class="px-3 py-2 rounded-xl bg-[#0f1115] hover:bg-[#232732] border border-[#2a2f3a] text-xs font-medium text-gray-300 transition cursor-pointer" title="Volver a los 15 hábitos sugeridos">
               Restaurar 15 ejemplos
+            </button>
+          </div>
+        </div>
+
+        <!-- BANNER / TARJETA DESTACADA DE MENSAJES MOTIVACIONALES POR RACHA O TROPIEZO -->
+        <div id="milestone-banner" class="hidden mb-4 rounded-2xl p-4 border shadow-lg transition-all duration-300 relative">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-start gap-3">
+              <div id="milestone-icon" class="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0">
+                🔥
+              </div>
+              <div>
+                <div class="flex flex-wrap items-center gap-2">
+                  <span id="milestone-badge" class="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md">
+                    Hito alcanzado
+                  </span>
+                  <span id="milestone-habit-name" class="text-xs font-semibold text-gray-400">
+                    Hábito
+                  </span>
+                </div>
+                <p id="milestone-text" class="mt-1.5 text-xs sm:text-sm font-semibold leading-relaxed text-white">
+                  Mensaje motivacional
+                </p>
+              </div>
+            </div>
+            <button onclick="closeMilestoneBanner()" class="text-gray-400 hover:text-white text-sm px-1.5 py-0.5 rounded-lg hover:bg-white/10 transition cursor-pointer" title="Cerrar mensaje">
+              ✕
             </button>
           </div>
         </div>
@@ -278,14 +297,14 @@
           </button>
         </form>
 
-        <!-- Resumen rápido de cumplimiento mensual -->
+        <!-- Resumen rápido de cumplimiento del ciclo -->
         <div class="grid grid-cols-3 gap-3 mb-4">
           <div class="bg-[#0f1115] border border-[#2a2f3a] rounded-xl p-3">
             <div class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Hábitos Activos</div>
             <div id="stat-total-habits" class="text-lg sm:text-xl font-bold text-white mt-0.5">15</div>
           </div>
           <div class="bg-[#0f1115] border border-[#2a2f3a] rounded-xl p-3">
-            <div class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Checks del Mes</div>
+            <div class="text-[11px] uppercase tracking-wider text-gray-400 font-semibold">Checks (Ciclo 21d)</div>
             <div id="stat-month-checks" class="text-lg sm:text-xl font-bold text-emerald-400 mt-0.5">0</div>
           </div>
           <div class="bg-[#0f1115] border border-[#2a2f3a] rounded-xl p-3">
@@ -294,12 +313,12 @@
           </div>
         </div>
 
-        <!-- Tabla / Cuadrícula Mensual Responsiva -->
+        <!-- Tabla / Cuadrícula 21 Días Responsiva -->
         <div class="overflow-x-auto border border-[#2a2f3a] rounded-xl bg-[#0f1115] flex-1">
           <table class="w-full border-collapse text-left">
             <thead>
               <tr id="habits-table-header" class="border-b border-[#2a2f3a] bg-[#14171d] text-[11px] font-semibold text-gray-400">
-                <!-- Cabecera dinámica con días 1..31 -->
+                <!-- Cabecera dinámica con días D1..D21 -->
               </tr>
             </thead>
             <tbody id="habits-table-body" class="divide-y divide-[#2a2f3a]/60 text-xs sm:text-sm">
@@ -318,7 +337,7 @@
               <span class="w-3 h-3 rounded bg-[#181b21] border border-[#2a2f3a] inline-block"></span> Pendiente
             </span>
             <span class="flex items-center gap-1.5">
-              <span class="w-3 h-3 rounded border border-amber-400 inline-block"></span> Día actual
+              <span class="w-3 h-3 rounded bg-rose-500/20 border border-rose-500/60 inline-block"></span> Día saltado (cadena rota)
             </span>
           </div>
           <span>Tus cambios se guardan automáticamente en este navegador.</span>
@@ -347,7 +366,7 @@
   <footer class="border-t border-[#2a2f3a] bg-[#181b21] mt-8">
     <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
       <p class="text-xs sm:text-sm font-medium text-gray-300">
-        Creado por <span class="text-emerald-400 font-semibold">Yury Marcela Galvis Parra</span> — Centro de Servicios Empresariales y Turísticos - SENA Regional Santander
+        Desarrollado como obsequio por <span class="text-emerald-400 font-semibold">Yury Marcela Galvis Parra</span> — Centro de Servicios Empresariales y Turísticos - SENA Regional Santander
       </p>
       <span class="text-[11px] text-gray-500">Herramienta de Productividad, Autogestión y Disciplina Personal</span>
     </div>
@@ -358,32 +377,69 @@
     // =========================================================================
     // 1. ESTADO GLOBAL Y DATOS PRECARGADOS
     // =========================================================================
-    const STORAGE_KEY = 'yury_disciplina_tiempo_v1';
+    const STORAGE_KEY = 'yury_disciplina_tiempo_21d_v2';
+    const CYCLE_DAYS = 21;
 
     // 15 ejemplos precargados enfocados en disciplina, bienestar y autogestión
     const DEFAULT_HABITS = [
-      { id: 'h1', name: 'Leer 20 min', color: 'emerald' },
-      { id: 'h2', name: 'Ejercicio 30 min', color: 'indigo' },
-      { id: 'h3', name: 'Sin redes sociales 1h', color: 'amber' },
-      { id: 'h4', name: 'Planificar el día', color: 'emerald' },
-      { id: 'h5', name: 'Tomar 2L de agua', color: 'indigo' },
-      { id: 'h6', name: 'Dormir 7-8 horas', color: 'purple' },
-      { id: 'h7', name: 'Estudiar / Autogestión', color: 'amber' },
-      { id: 'h8', name: 'Meditar o respirar 10 min', color: 'emerald' },
-      { id: 'h9', name: 'Cero azúcar añadido', color: 'rose' },
-      { id: 'h10', name: 'Ordenar espacio de trabajo', color: 'indigo' },
-      { id: 'h11', name: 'Agradecer 3 cosas del día', color: 'amber' },
-      { id: 'h12', name: 'Caminar 8,000 pasos', color: 'emerald' },
-      { id: 'h13', name: 'Desconexión digital nocturna', color: 'purple' },
+      { id: 'h1', name: 'Leer 20 minutos diarios', color: 'emerald' },
+      { id: 'h2', name: 'Ejercicio físico (30 min)', color: 'indigo' },
+      { id: 'h3', name: 'Sin redes sociales antes del mediodía', color: 'amber' },
+      { id: 'h4', name: 'Tomar 2 litros de agua', color: 'emerald' },
+      { id: 'h5', name: 'Planificar el día siguiente antes de dormir', color: 'indigo' },
+      { id: 'h6', name: 'Meditación o respiración consciente (10 min)', color: 'purple' },
+      { id: 'h7', name: 'Dormir 7-8 horas', color: 'indigo' },
+      { id: 'h8', name: 'Avanzar en proyecto de autogestión', color: 'amber' },
+      { id: 'h9', name: 'Alimentación saludable sin azúcares añadidos', color: 'rose' },
+      { id: 'h10', name: 'Ordenar espacio de trabajo (5 min)', color: 'indigo' },
+      { id: 'h11', name: 'Practicar gratitud (escribir 3 cosas)', color: 'amber' },
+      { id: 'h12', name: 'Aprender algo nuevo (15 min)', color: 'emerald' },
+      { id: 'h13', name: 'Desconexión digital 1 hora antes de dormir', color: 'purple' },
       { id: 'h14', name: 'Revisar metas semanales', color: 'indigo' },
-      { id: 'h15', name: 'Ahorro diario consciente', color: 'emerald' }
+      { id: 'h15', name: 'Caminata al aire libre / pausa activa', color: 'emerald' }
     ];
+
+    // Mensajes motivacionales exactos según hitos o tropiezos
+    const STREAK_MESSAGES = {
+      day3: {
+        badge: '🔥 ¡3 Días Consecutivos!',
+        icon: '🌱',
+        style: 'bg-emerald-950/60 border-emerald-500/50',
+        badgeStyle: 'bg-emerald-500/20 text-emerald-300',
+        iconBg: 'bg-emerald-500/20 text-emerald-300',
+        text: 'Estas muy bien, Un hábito sencillo repetido cada día construye resultados reales con el tiempo'
+      },
+      day8: {
+        badge: '⚡ ¡8 Días Consecutivos!',
+        icon: '🚀',
+        style: 'bg-indigo-950/60 border-indigo-500/50',
+        badgeStyle: 'bg-indigo-500/20 text-indigo-300',
+        iconBg: 'bg-indigo-500/20 text-indigo-300',
+        text: 'Cada "sí" a tu meta es un voto por la persona en la que quieres convertirte'
+      },
+      day21: {
+        badge: '🏆 ¡21 Días Consecutivos Completados!',
+        icon: '👑',
+        style: 'bg-amber-950/60 border-amber-500/60',
+        badgeStyle: 'bg-amber-500/20 text-amber-300',
+        iconBg: 'bg-amber-500/20 text-amber-300',
+        text: '17 días cumpliendo tu palabra contigo mismo. Ya dejaste atrás el simple entusiasmo del inicio y estás construyendo disciplina real. ¡Sigue firme, un día más a la vez!'
+      },
+      break: {
+        badge: '💪 Tropiezo Detectado — Retoma el Ritmo',
+        icon: '🔄',
+        style: 'bg-rose-950/50 border-rose-500/50',
+        badgeStyle: 'bg-rose-500/20 text-rose-300',
+        iconBg: 'bg-rose-500/20 text-rose-300',
+        text: 'Tropezar es parte del proceso; levantarte y retomar el ritmo define tu progreso.'
+      }
+    };
 
     // Categorías para el Planificador de Bloques de Tiempo
     const CATEGORIES = {
-      enfoque: { label: 'Enfoque Profundo', badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40', dot: 'bg-indigo-500' },
+      enfoque: { label: 'Trabajo Profundo', badge: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/40', dot: 'bg-indigo-500' },
       autogestion: { label: 'Autogestión / Pomodoro', badge: 'bg-amber-500/20 text-amber-300 border-amber-500/40', dot: 'bg-amber-500' },
-      rutina: { label: 'Rutina / Hábito', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', dot: 'bg-emerald-500' },
+      rutina: { label: 'Bienestar / Hábito', badge: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40', dot: 'bg-emerald-500' },
       descanso: { label: 'Descanso / Personal', badge: 'bg-purple-500/20 text-purple-300 border-purple-500/40', dot: 'bg-purple-500' }
     };
 
@@ -392,13 +448,10 @@
     let appState = {
       schedule: {}, // { "6": { text: "", category: "enfoque", completed: false }, ... }
       habits: JSON.parse(JSON.stringify(DEFAULT_HABITS)),
-      habitLogs: {}, // { "2026-11": { "h1": [1, 2, 5] } }
+      cycleLogs: {}, // { "h1": [1, 2, 3, ...] } para los 21 días
       pomodoroSessionsToday: 0,
       lastSessionDate: new Date().toDateString()
     };
-
-    // Mes actualmente visualizado en el rastreador
-    let viewDate = new Date();
 
     // Estado del Temporizador Pomodoro
     let pomoState = {
@@ -421,6 +474,9 @@
         if (saved) {
           const parsed = JSON.parse(saved);
           appState = { ...appState, ...parsed };
+          if (!appState.cycleLogs || typeof appState.cycleLogs !== 'object') {
+            appState.cycleLogs = {};
+          }
           // Reiniciar contador diario de pomodoros si cambió de día
           const todayStr = new Date().toDateString();
           if (appState.lastSessionDate !== todayStr) {
@@ -671,9 +727,9 @@
             title="Tipo de actividad"
             class="hidden sm:block text-[11px] font-medium px-2 py-1 rounded-lg border bg-[#181b21] focus:outline-none cursor-pointer ${catInfo.badge}"
           >
-            <option value="enfoque" ${entry.category === 'enfoque' ? 'selected' : ''}>Enfoque</option>
+            <option value="enfoque" ${entry.category === 'enfoque' ? 'selected' : ''}>Trabajo Profundo</option>
             <option value="autogestion" ${entry.category === 'autogestion' ? 'selected' : ''}>Autogestión</option>
-            <option value="rutina" ${entry.category === 'rutina' ? 'selected' : ''}>Rutina</option>
+            <option value="rutina" ${entry.category === 'rutina' ? 'selected' : ''}>Bienestar</option>
             <option value="descanso" ${entry.category === 'descanso' ? 'selected' : ''}>Descanso</option>
           </select>
 
@@ -734,31 +790,45 @@
     }
 
     // =========================================================================
-    // 6. RASTREADOR DE HÁBITOS ("NO ROMPAS LA CADENA")
+    // 6. RASTREADOR DE HÁBITOS "NO ROMPAS LA CADENA" (RETO DE 21 DÍAS)
     // =========================================================================
-    function getMonthKey(dateObj) {
-      const y = dateObj.getFullYear();
-      const m = (dateObj.getMonth() + 1).toString().padStart(2, '0');
-      return `${y}-${m}`;
+    function showMilestoneBanner(type, habitName) {
+      const config = STREAK_MESSAGES[type];
+      if (!config) return;
+
+      const banner = document.getElementById('milestone-banner');
+      const iconEl = document.getElementById('milestone-icon');
+      const badgeEl = document.getElementById('milestone-badge');
+      const habitEl = document.getElementById('milestone-habit-name');
+      const textEl = document.getElementById('milestone-text');
+
+      banner.className = `mb-4 rounded-2xl p-4 border shadow-xl transition-all duration-300 relative ${config.style}`;
+      iconEl.className = `w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 ${config.iconBg}`;
+      iconEl.textContent = config.icon;
+
+      badgeEl.className = `text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md ${config.badgeStyle}`;
+      badgeEl.textContent = config.badge;
+
+      habitEl.textContent = `Hábito: "${habitName}"`;
+      textEl.textContent = config.text;
+
+      banner.classList.remove('hidden');
+      showToast(config.badge);
     }
 
-    function getDaysInMonth(dateObj) {
-      return new Date(dateObj.getFullYear(), dateObj.getMonth() + 1, 0).getDate();
+    function closeMilestoneBanner() {
+      document.getElementById('milestone-banner').classList.add('hidden');
     }
 
-    function changeMonth(delta) {
-      viewDate = new Date(viewDate.getFullYear(), viewDate.getMonth() + delta, 1);
-      renderHabitsTracker();
-    }
+    function analyzeHabitCycle(habitId) {
+      const rawDays = appState.cycleLogs[habitId] || [];
+      const sortedDays = [...new Set(rawDays)].filter(d => d >= 1 && d <= CYCLE_DAYS).sort((a, b) => a - b);
+      const setDays = new Set(sortedDays);
 
-    function calculateStreaks(habitId, monthKey, daysInMonth) {
-      const completedDays = (appState.habitLogs[monthKey] && appState.habitLogs[monthKey][habitId]) || [];
-      const setDays = new Set(completedDays);
-
-      // Calcular mejor racha dentro del mes
+      // Calcular mejor racha del ciclo de 21 días
       let best = 0;
       let temp = 0;
-      for (let d = 1; d <= daysInMonth; d++) {
+      for (let d = 1; d <= CYCLE_DAYS; d++) {
         if (setDays.has(d)) {
           temp++;
           if (temp > best) best = temp;
@@ -767,60 +837,58 @@
         }
       }
 
-      // Calcular racha actual (mirando hacia atrás desde hoy si es el mes actual, o desde el último día marcado)
-      const now = new Date();
-      const isCurrentMonth = now.getFullYear() === viewDate.getFullYear() && now.getMonth() === viewDate.getMonth();
+      // Calcular racha actual continua hacia atrás desde el último día marcado
       let current = 0;
+      let hasGapBeforeLast = false;
+      const skippedDays = new Set();
 
-      if (isCurrentMonth) {
-        const today = now.getDate();
-        // Si hoy está marcado, contamos hacia atrás desde hoy; si no, desde ayer
-        let cursor = setDays.has(today) ? today : today - 1;
+      if (sortedDays.length > 0) {
+        const lastMarkedDay = sortedDays[sortedDays.length - 1];
+        let cursor = lastMarkedDay;
         while (cursor >= 1 && setDays.has(cursor)) {
           current++;
           cursor--;
         }
-      } else {
-        // Para meses pasados/futuros, mostramos la última racha consecutiva al final del mes
-        let cursor = daysInMonth;
-        while (cursor >= 1 && setDays.has(cursor)) {
-          current++;
-          cursor--;
+
+        // Detectar días vacíos (huecos/tropiezos) entre el primer día marcado y el último día marcado
+        const firstMarkedDay = sortedDays[0];
+        for (let d = firstMarkedDay; d < lastMarkedDay; d++) {
+          if (!setDays.has(d)) {
+            hasGapBeforeLast = true;
+            skippedDays.add(d);
+          }
         }
       }
 
-      return { current, best, total: setDays.size };
+      return {
+        current,
+        best,
+        total: setDays.size,
+        hasGapBeforeLast,
+        skippedDays,
+        setDays
+      };
     }
 
     function renderHabitsTracker() {
-      const monthKey = getMonthKey(viewDate);
-      const daysInMonth = getDaysInMonth(viewDate);
-      const now = new Date();
-      const isCurrentMonth = now.getFullYear() === viewDate.getFullYear() && now.getMonth() === viewDate.getMonth();
-      const todayDay = now.getDate();
-
-      // Actualizar etiqueta del mes
-      const monthLabel = viewDate.toLocaleDateString('es-CO', { month: 'long', year: 'numeric' });
-      document.getElementById('current-month-label').textContent = monthLabel;
-
-      // Renderizar cabecera de días
+      // Renderizar cabecera de días (D1 a D21)
       const thead = document.getElementById('habits-table-header');
       let headerHTML = `
-        <th class="sticky left-0 z-20 bg-[#14171d] px-3 py-2.5 min-w-[200px] sm:min-w-[230px] border-r border-[#2a2f3a] text-gray-300">
+        <th class="sticky left-0 z-20 bg-[#14171d] px-3 py-2.5 min-w-[210px] sm:min-w-[240px] border-r border-[#2a2f3a] text-gray-300">
           Hábito / Disciplina (Editable)
         </th>
       `;
-      for (let d = 1; d <= daysInMonth; d++) {
-        const isToday = isCurrentMonth && d === todayDay;
+      for (let d = 1; d <= CYCLE_DAYS; d++) {
+        const isMilestoneCol = d === 3 || d === 8 || d === 21;
         headerHTML += `
-          <th class="px-1 py-2 text-center min-w-[28px] ${isToday ? 'text-amber-400 font-extrabold bg-amber-500/10' : ''}">
-            ${d}
+          <th class="px-1 py-2 text-center min-w-[32px] ${isMilestoneCol ? 'text-amber-400 font-extrabold bg-amber-500/10' : ''}" title="${isMilestoneCol ? `Meta de ${d} días consecutivos` : `Día ${d}`}">
+            D${d}
           </th>
         `;
       }
       headerHTML += `
-        <th class="px-2.5 py-2 text-center border-l border-[#2a2f3a] text-emerald-400" title="Racha actual">🔥 Racha</th>
-        <th class="px-2.5 py-2 text-center text-amber-400" title="Mejor racha del mes">🏆 Máx</th>
+        <th class="px-2.5 py-2 text-center border-l border-[#2a2f3a] text-emerald-400" title="Racha actual consecutiva">🔥 Racha</th>
+        <th class="px-2.5 py-2 text-center text-amber-400" title="Racha máxima del ciclo">🏆 Máx</th>
       `;
       thead.innerHTML = headerHTML;
 
@@ -828,7 +896,7 @@
       const tbody = document.getElementById('habits-table-body');
       tbody.innerHTML = '';
 
-      let totalMonthChecks = 0;
+      let totalCycleChecks = 0;
       let globalBestStreak = 0;
 
       const colorClasses = {
@@ -840,12 +908,10 @@
       };
 
       appState.habits.forEach((habit, index) => {
-        const completedDays = (appState.habitLogs[monthKey] && appState.habitLogs[monthKey][habit.id]) || [];
-        const completedSet = new Set(completedDays);
-        const streaks = calculateStreaks(habit.id, monthKey, daysInMonth);
+        const stats = analyzeHabitCycle(habit.id);
 
-        totalMonthChecks += streaks.total;
-        if (streaks.best > globalBestStreak) globalBestStreak = streaks.best;
+        totalCycleChecks += stats.total;
+        if (stats.best > globalBestStreak) globalBestStreak = stats.best;
 
         const activeBg = colorClasses[habit.color] || colorClasses.emerald;
 
@@ -874,35 +940,45 @@
           </td>
         `;
 
-        for (let d = 1; d <= daysInMonth; d++) {
-          const isChecked = completedSet.has(d);
-          const isToday = isCurrentMonth && d === todayDay;
+        for (let d = 1; d <= CYCLE_DAYS; d++) {
+          const isChecked = stats.setDays.has(d);
+          const isSkipped = !isChecked && stats.skippedDays.has(d);
+          const isMilestoneCol = d === 3 || d === 8 || d === 21;
 
           rowHTML += `
-            <td class="p-0.5 text-center ${isToday ? 'bg-amber-500/5' : ''}">
+            <td class="p-0.5 text-center ${isMilestoneCol ? 'bg-amber-500/5' : ''}">
               <button
                 onclick="toggleHabitDay('${habit.id}', ${d})"
                 aria-label="Día ${d} - ${escapeHtml(habit.name)}"
+                title="${isSkipped ? `Día ${d} saltado (rompe la cadena)` : `Día ${d}`}"
                 class="habit-cell w-6 h-6 rounded-md border mx-auto flex items-center justify-center cursor-pointer ${
                   isChecked
                     ? `${activeBg} text-white shadow-sm`
-                    : isToday
-                      ? 'bg-[#181b21] border-amber-400/70 hover:border-amber-300'
-                      : 'bg-[#181b21] border-[#2a2f3a] hover:border-gray-500'
+                    : isSkipped
+                      ? 'bg-rose-500/15 border-rose-500/60 hover:border-rose-400 text-rose-400'
+                      : isMilestoneCol
+                        ? 'bg-[#181b21] border-amber-500/40 hover:border-amber-400'
+                        : 'bg-[#181b21] border-[#2a2f3a] hover:border-gray-500'
                 }"
               >
-                ${isChecked ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>' : ''}
+                ${
+                  isChecked
+                    ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>'
+                    : isSkipped
+                      ? '<span class="text-[10px] font-bold">•</span>'
+                      : ''
+                }
               </button>
             </td>
           `;
         }
 
         rowHTML += `
-          <td class="px-2 py-2 text-center border-l border-[#2a2f3a] font-mono text-xs font-bold ${streaks.current > 0 ? 'text-emerald-400' : 'text-gray-500'}">
-            ${streaks.current}d
+          <td class="px-2 py-2 text-center border-l border-[#2a2f3a] font-mono text-xs font-bold ${stats.current > 0 ? 'text-emerald-400' : 'text-gray-500'}">
+            ${stats.current}d
           </td>
-          <td class="px-2 py-2 text-center font-mono text-xs font-bold ${streaks.best > 0 ? 'text-amber-400' : 'text-gray-500'}">
-            ${streaks.best}d
+          <td class="px-2 py-2 text-center font-mono text-xs font-bold ${stats.best > 0 ? 'text-amber-400' : 'text-gray-500'}">
+            ${stats.best}d
           </td>
         `;
 
@@ -912,29 +988,52 @@
 
       // Actualizar métricas superiores
       document.getElementById('stat-total-habits').textContent = appState.habits.length;
-      document.getElementById('stat-month-checks').textContent = totalMonthChecks;
+      document.getElementById('stat-month-checks').textContent = totalCycleChecks;
       document.getElementById('stat-best-streak').textContent = `${globalBestStreak} días`;
     }
 
     function toggleHabitDay(habitId, day) {
-      const monthKey = getMonthKey(viewDate);
-      if (!appState.habitLogs[monthKey]) {
-        appState.habitLogs[monthKey] = {};
-      }
-      if (!appState.habitLogs[monthKey][habitId]) {
-        appState.habitLogs[monthKey][habitId] = [];
+      if (!appState.cycleLogs[habitId]) {
+        appState.cycleLogs[habitId] = [];
       }
 
-      const list = appState.habitLogs[monthKey][habitId];
+      const habit = appState.habits.find(h => h.id === habitId);
+      const habitName = habit ? habit.name : 'Hábito';
+      const prevStats = analyzeHabitCycle(habitId);
+
+      const list = appState.cycleLogs[habitId];
       const idx = list.indexOf(day);
-      if (idx > -1) {
+      const wasChecked = idx > -1;
+
+      if (wasChecked) {
         list.splice(idx, 1);
       } else {
         list.push(day);
       }
 
+      const newStats = analyzeHabitCycle(habitId);
       saveState();
       renderHabitsTracker();
+
+      // Evaluación de mensajes dinámicos según racha o ruptura de cadena
+      if (!wasChecked) {
+        // El usuario marcó un día
+        if (newStats.current === 21) {
+          showMilestoneBanner('day21', habitName);
+        } else if (newStats.current === 8) {
+          showMilestoneBanner('day8', habitName);
+        } else if (newStats.current === 3) {
+          showMilestoneBanner('day3', habitName);
+        } else if (newStats.hasGapBeforeLast && newStats.skippedDays.size > prevStats.skippedDays.size) {
+          // Marcó un día saltándose uno o más días intermedios (rompió la continuidad)
+          showMilestoneBanner('break', habitName);
+        }
+      } else {
+        // El usuario desmarcó un día: si rompió una cadena existente o dejó un hueco
+        if (prevStats.total >= 2 && (newStats.hasGapBeforeLast || newStats.current < prevStats.current)) {
+          showMilestoneBanner('break', habitName);
+        }
+      }
     }
 
     function editHabitName(habitId, newName) {
@@ -978,9 +1077,24 @@
         '¿Deseas quitar este hábito de tu lista? Podrás agregar otros en cualquier momento.',
         () => {
           appState.habits = appState.habits.filter(h => h.id !== habitId);
+          delete appState.cycleLogs[habitId];
           saveState();
           renderHabitsTracker();
           showToast('Hábito eliminado');
+        }
+      );
+    }
+
+    function requestResetCycle() {
+      openConfirmModal(
+        'Reiniciar ciclo de 21 días',
+        '¿Deseas limpiar todas las casillas marcadas en los 21 días para iniciar un nuevo reto desde cero? Tus hábitos personalizados se conservarán.',
+        () => {
+          appState.cycleLogs = {};
+          saveState();
+          closeMilestoneBanner();
+          renderHabitsTracker();
+          showToast('Ciclo de 21 días reiniciado');
         }
       );
     }
